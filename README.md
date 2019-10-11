@@ -8,4 +8,4 @@ The reason why I decided to develop this tool is about the information gathering
 which is the most important phase of the penetration test.</br>
 Many time I missed a detail that could have been funtamental for the success of the exploitation.</br>
 P.S. The name is due to a collegue of mine, considered one of the last real hacker out there.</br> 
-Is name is Rosario.
+His name is Rosario.
