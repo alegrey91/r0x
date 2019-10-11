@@ -1,21 +1,26 @@
 #!/usr/bin/env python3
 
-from . import variables
+#from . import variables
 import subprocess
 import os
 import re
 import nmap as nm
 
 UNICORNSCAN = "unicornscan -mU -r200 {}"
-NMAPSCAN = "-sU --host-timeout 400 -sV -p{} "
+NMAPSCAN = "-sU --host-timeout 400 -sV "
+top_ports = "--top-ports 50 "
 
 """
 UDP Scan using unicornscan.
 """
 class UDPScan:
 
-    def __init__(self, ipaddr):
+    def __init__(self, ipaddr, args):
         self.ipaddr = ipaddr
+        if "-p" in args:
+            self.args = NMAPSCAN + args
+        else:
+            self.args = NMAPSCAN + top_ports
 
     """
     Perform a preliminary fast scan using unicornscan,
@@ -41,16 +46,21 @@ class UDPScan:
     """
     def print_output(self, nmap):
         for ip in nmap.all_hosts():
-            print("[{}]".format(ip))
+            #print("[{}]".format(ip))
+            ports = nmap[ip].all_udp()
+            print("[UDP]")
             print("PORT\tSTATUS\tPROTO\tVERSION")
-            for port in nmap[ip].all_udp():
-                info = dict(nmap[ip].udp(port))
-                print("{}\t{}\t{}\t{} {} {}".format(port, 
-                    info['state'], 
-                    info['name'], 
-                    info['product'],
-                    info['version'], 
-                    info['extrainfo']))
+            if len(ports) != 0:
+                for port in ports:
+                    info = dict(nmap[ip].udp(port))
+                    print("{}\t{}\t{}\t{} {} {}".format(port, 
+                        info['state'], 
+                        info['name'], 
+                        info['product'],
+                        info['version'], 
+                        info['extrainfo']))
+            else:
+                print("-\t-\t-\t-")
             print()
 
     """
@@ -58,12 +68,9 @@ class UDPScan:
     perform an exaustive scan using nmap.
     """
     def scan(self):
-        ports = variables.top_udp_ports #self.fast_scan()
-        udp_ports = ','.join(ports)
-        arguments = NMAPSCAN.format(udp_ports)
-        #print("nmap {} {}".format(arguments,self.ipaddr))
         nmap = nm.PortScanner()
-        nmap.scan(hosts=self.ipaddr, arguments=arguments)
+        nmap.scan(hosts=self.ipaddr, arguments=self.args)
         # Output formatting
+        print("nmap {} {}".format(self.args, self.ipaddr))
         self.print_output(nmap)
         return nmap

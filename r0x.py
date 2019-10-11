@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 __author__ = "alegrey91"
+__version__ = "0.1"
 
 import nmap as nm
 import argparse
@@ -23,12 +24,10 @@ def signal_handler(sig, frame):
     print('Ctrl+C pressed.')
     sys.exit(0)
 
-default_arguments = "-n -Pn -sS -sV -T{} "
-
 if __name__ == "__main__":
 
     banner()
-    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
 
     # Argument parsing
     parser = argparse.ArgumentParser(description='r0x is a network scanner for pentesting.')
@@ -40,7 +39,7 @@ if __name__ == "__main__":
             type=int, 
             help="Set scan timing -T 0-5. \
                     Default 4", 
-            default=3, 
+            default=4, 
             required=False)
     parser.add_argument("-p",
             "--port", 
@@ -49,6 +48,8 @@ if __name__ == "__main__":
                 Ex: -p22; -p1-65535; -p U:53,111,137,T:21-25,80,139,8080,S:9", 
             required=False)
     args = parser.parse_args()
+
+    default_arguments = "-T{} "
 
     # Make some checks/actions for arguments provided.
     if args.port:
@@ -60,18 +61,11 @@ if __name__ == "__main__":
     host = args.host
     arguments = default_arguments
     
-    print("nmap {}{}".format(arguments, host))
-    print()
-
     # Scanning phase
-    print("[TCP]")
     tcp = tcp_scan.TCPScan(host, arguments)
-    tcp.scan()
+    udp = udp_scan.UDPScan(host, arguments)
 
-    print("[UDP]")
-    udp = udp_scan.UDPScan(host)
-    udp.scan()
-
-    #thread = threading.Thread(target=udp.scan)
-    #thread.start()
-    #print(udp_ports)
+    thread_tcp = threading.Thread(target=tcp.scan)
+    thread_udp = threading.Thread(target=udp.scan)
+    thread_tcp.start()
+    thread_udp.start()
