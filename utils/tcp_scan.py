@@ -2,7 +2,7 @@
 
 import nmap as nm
 
-NMAPSCAN = "-n -Pn -sS -sV "
+NMAPSCAN = "-n -Pn -sS "
 
 class TCPScan:
 
