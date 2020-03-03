@@ -69,3 +69,6 @@ if __name__ == "__main__":
     thread_udp = threading.Thread(target=udp.scan)
     thread_tcp.start()
     thread_udp.start()
+    thread_tcp.join()
+    thread_udp.join()
+    sys.exit(0)
