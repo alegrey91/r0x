@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 __author__ = "alegrey91"
-__version__ = "0.1"
+__version__ = "0.2"
 
 import nmap as nm
 import argparse
@@ -10,12 +10,13 @@ import signal
 import sys
 from utils import tcp_scan
 from utils import udp_scan
+from utils import status
 
 def banner():
-    print("          ___          ") 
-    print("    _ __ / _ \__  __   ") 
-    print("   | '__| | | \ \/ /   ") 
-    print("   | |  | |_| |>  <    ") 
+    print("          ___          ")
+    print("    _ __ / _ \__  __   ")
+    print("   | '__| | | \ \/ /   ")
+    print("   | |  | |_| |>  <    ")
     print("   |_|   \___//_/\_\   ")
     print("           by {}".format(__author__))
     print()
@@ -32,20 +33,20 @@ if __name__ == "__main__":
     # Argument parsing
     parser = argparse.ArgumentParser(description='r0x is a network scanner for pentesting.')
     parser.add_argument("host",
-            type=str, 
+            type=str,
             help="Host ip address(es)")
-    parser.add_argument("-T", 
-            "--timing", 
-            type=int, 
+    parser.add_argument("-T",
+            "--timing",
+            type=int,
             help="Set scan timing -T 0-5. \
-                    Default 4", 
-            default=4, 
+                    Default 4",
+            default=4,
             required=False)
     parser.add_argument("-p",
-            "--port", 
+            "--port",
             type=str,
             help="Select ports to scan. -p <port ranges>: Only scan specified ports \
-                Ex: -p22; -p1-65535; -p U:53,111,137,T:21-25,80,139,8080,S:9", 
+                Ex: -p22; -p1-65535; -p U:53,111,137,T:21-25,80,139,8080,S:9",
             required=False)
     args = parser.parse_args()
 
@@ -60,7 +61,7 @@ if __name__ == "__main__":
     # Variables definition
     host = args.host
     arguments = default_arguments
-    
+
     # Scanning phase
     tcp = tcp_scan.TCPScan(host, arguments)
     udp = udp_scan.UDPScan(host, arguments)
@@ -71,4 +72,6 @@ if __name__ == "__main__":
     thread_udp.start()
     thread_tcp.join()
     thread_udp.join()
-    sys.exit(0)
+
+    stats = status.Status()
+    stats.cmdloop()
