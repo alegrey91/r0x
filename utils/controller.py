@@ -10,13 +10,14 @@ from utils import operation
 
 class Controller(cmd.Cmd):
     prompt = "⮡  "
-    operations = []
-    scans = {}
-    tcp = None
-    udp = None
-
 
     def __init__(self, host):
+
+        self.operations = {}
+        self.scans = {}
+        self.tcp = None
+        self.udp = None
+        self.host = host
 
         super(Controller, self).__init__()
 
@@ -37,6 +38,15 @@ class Controller(cmd.Cmd):
         self.scans["tcp_scan"] = thread_tcp
         self.scans["udp_scan"] = thread_udp
 
+    """
+    Method to execute commands for tests
+    """
+    def do_exec(self, script_name):
+        op = operation.Operation(script_name)
+        self.operations[script_name] = op
+        print(self.operations)
+        op.execute(self.host)
+
 
     def do_status(self, _):
         'Show the status of pending operations running for the reconnaissance.'
@@ -46,12 +56,14 @@ class Controller(cmd.Cmd):
                 print(scan + ": \033[32mcompleted\033[0m")
             else:
                 print(scan + ": \033[31mrunning\033[0m")
-        print("------------------------")
 
         print("[OPERATIONS]")
         for ops in self.operations:
-            print("status: " + ops.getOutput())
-        print("------------------------")
+            if not self.operations[ops].isAlive():
+                print(self.operations[ops].getCmdtName() + ": \033[32mcompleted\033[0m")
+            else:
+                print(self.operations[ops].getCmdtName() + ": \033[31mrunning\033[0m")
+        print()
 
 
     def do_show(self, script_name):
@@ -61,7 +73,11 @@ class Controller(cmd.Cmd):
         elif script_name == "udp_scan":
             print(self.udp.print_output())
         else:
-            print(script_name)
+            print("---------------- " + script_name + " ----------------")
+            err, out = self.operations[script_name].print_output()
+            print(out)
+            print(err)
+        print()
 
 
     def do_quit(self, _):
