@@ -15,12 +15,13 @@ UDP Scan using unicornscan.
 """
 class UDPScan:
 
-    def __init__(self, ipaddr, args):
+    def __init__(self, ipaddr):
         self.ipaddr = ipaddr
-        if "-p" in args:
-            self.args = NMAPSCAN + args
-        else:
-            self.args = NMAPSCAN + top_ports
+        self.args = NMAPSCAN + top_ports
+#        if "-p" in args:
+#            self.args = NMAPSCAN
+#        else:
+#            self.args = NMAPSCAN + top_ports
 
     """
     Perform a preliminary fast scan using unicornscan,
@@ -71,6 +72,6 @@ class UDPScan:
         nmap = nm.PortScanner()
         nmap.scan(hosts=self.ipaddr, arguments=self.args)
         # Output formatting
-        print("nmap {} {}".format(self.args, self.ipaddr))
-        self.print_output(nmap)
+        #print("nmap {} {}".format(self.args, self.ipaddr))
+        #self.print_output(nmap)
         return nmap

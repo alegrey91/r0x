@@ -5,19 +5,16 @@ __version__ = "0.2"
 
 import nmap as nm
 import argparse
-import threading
 import signal
 import sys
-from utils import tcp_scan
-from utils import udp_scan
-from utils import status
+from utils import controller
 
 def banner():
-    print("          ___          ")
-    print("    _ __ / _ \__  __   ")
-    print("   | '__| | | \ \/ /   ")
-    print("   | |  | |_| |>  <    ")
-    print("   |_|   \___//_/\_\   ")
+    print("\033[0m          ___          ")
+    print("\033[0m    _ __ / _ \__  __   ")
+    print("\033[93m   | '__| | | \ \/ /   ")
+    print("\033[33m   | |  | |_| |>  <    ")
+    print("\033[91m   |_|   \___//_/\_\   \033[0m")
     print("           by {}".format(__author__))
     print()
 
@@ -35,43 +32,10 @@ if __name__ == "__main__":
     parser.add_argument("host",
             type=str,
             help="Host ip address(es)")
-    parser.add_argument("-T",
-            "--timing",
-            type=int,
-            help="Set scan timing -T 0-5. \
-                    Default 4",
-            default=4,
-            required=False)
-    parser.add_argument("-p",
-            "--port",
-            type=str,
-            help="Select ports to scan. -p <port ranges>: Only scan specified ports \
-                Ex: -p22; -p1-65535; -p U:53,111,137,T:21-25,80,139,8080,S:9",
-            required=False)
     args = parser.parse_args()
-
-    default_arguments = "-T{} "
-
-    # Make some checks/actions for arguments provided.
-    if args.port:
-        default_arguments += "-p{} ".format(args.port)
-    if args.timing:
-        default_arguments = default_arguments.format(args.timing)
 
     # Variables definition
     host = args.host
-    arguments = default_arguments
 
-    # Scanning phase
-    tcp = tcp_scan.TCPScan(host, arguments)
-    udp = udp_scan.UDPScan(host, arguments)
-
-    thread_tcp = threading.Thread(target=tcp.scan)
-    thread_udp = threading.Thread(target=udp.scan)
-    thread_tcp.start()
-    thread_udp.start()
-    thread_tcp.join()
-    thread_udp.join()
-
-    stats = status.Status()
-    stats.cmdloop()
+    ctl = controller.Controller(host)
+    ctl.cmdloop()

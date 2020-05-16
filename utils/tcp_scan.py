@@ -6,9 +6,9 @@ NMAPSCAN = "-n -Pn -sS "
 
 class TCPScan:
 
-    def __init__(self, ipaddr, args):
+    def __init__(self, ipaddr):
         self.ipaddr = ipaddr
-        self.args = NMAPSCAN + args
+        self.args = NMAPSCAN
 
 
     """
@@ -40,6 +40,6 @@ class TCPScan:
         nmap = nm.PortScanner()
         nmap.scan(hosts=self.ipaddr, arguments=self.args)
         # Output formatting
-        print("nmap {} {}".format(self.args, self.ipaddr))
-        self.print_output(nmap)
+        #print("nmap {} {}".format(self.args, self.ipaddr))
+        #self.print_output(nmap)
         return nmap
