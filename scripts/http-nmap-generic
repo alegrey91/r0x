@@ -1,0 +1,1 @@
+nmap -n -sV --script "(http* and not (dos or brute) and not http-xssed)" -p 80 $1
