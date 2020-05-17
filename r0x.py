@@ -10,10 +10,10 @@ import sys
 from utils import controller
 
 def banner():
-    print("\033[0m          ___          ")
-    print("\033[0m    _ __ / _ \__  __   ")
-    print("\033[93m   | '__| | | \ \/ /   ")
-    print("\033[33m   | |  | |_| |>  <    ")
+    print("\033[0m          ___          \033[0m")
+    print("\033[0m    _ __ / _ \__  __   \033[0m")
+    print("\033[93m   | '__| | | \ \/ /   \033[0m")
+    print("\033[33m   | |  | |_| |>  <    \033[0m")
     print("\033[91m   |_|   \___//_/\_\   \033[0m")
     print("           by {}".format(__author__))
     print()

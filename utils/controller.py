@@ -13,13 +13,13 @@ class Controller(cmd.Cmd):
 
     def __init__(self, host):
 
+        super(Controller, self).__init__()
+
         self.operations = {}
         self.scans = {}
         self.tcp = None
         self.udp = None
         self.host = host
-
-        super(Controller, self).__init__()
 
         print("[r0x-shell]")
         # Scanning phase
@@ -38,16 +38,25 @@ class Controller(cmd.Cmd):
         self.scans["tcp_scan"] = thread_tcp
         self.scans["udp_scan"] = thread_udp
 
+
     """
     Method to execute commands for tests
     """
     def do_exec(self, script_name):
+        'Execute script manually.'
+
         op = operation.Operation(script_name)
         self.operations[script_name] = op
-        print(self.operations)
-        op.execute(self.host)
+
+        thread = threading.Thread(target=op.execute, args=[self.host])
+        thread.setDaemon(True)
+        thread.start()
+        print()
 
 
+    """
+    Check status of running operations.
+    """
     def do_status(self, _):
         'Show the status of pending operations running for the reconnaissance.'
         print("[SCANNING]")
@@ -56,16 +65,21 @@ class Controller(cmd.Cmd):
                 print(scan + ": \033[32mcompleted\033[0m")
             else:
                 print(scan + ": \033[31mrunning\033[0m")
-
+        print()
         print("[OPERATIONS]")
+        if len(self.operations) < 1:
+            print("...")
         for ops in self.operations:
             if not self.operations[ops].isAlive():
-                print(self.operations[ops].getCmdtName() + ": \033[32mcompleted\033[0m")
+                print(self.operations[ops].getName() + ": \033[32mcompleted\033[0m")
             else:
-                print(self.operations[ops].getCmdtName() + ": \033[31mrunning\033[0m")
+                print(self.operations[ops].getName() + ": \033[31mrunning\033[0m")
         print()
 
 
+    """
+    Get output of the process.
+    """
     def do_show(self, script_name):
         'Show the output of the selected operation. Usage: show [ scan | operation ].'
         if script_name == "tcp_scan":
@@ -74,12 +88,17 @@ class Controller(cmd.Cmd):
             print(self.udp.print_output())
         else:
             print("---------------- " + script_name + " ----------------")
-            err, out = self.operations[script_name].print_output()
-            print(out)
-            print(err)
+            if not self.operations[script_name].isAlive():
+                out = self.operations[script_name].getOutput()
+                print(out)
+            else:
+                print("Process is still running. Cannot access its stdout.")
         print()
 
 
+    """
+    Quit the program.
+    """
     def do_quit(self, _):
         'Quit the program.'
         sys.exit(0)

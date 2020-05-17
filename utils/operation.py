@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import subprocess
+import traceback
 
 class Operation():
 
@@ -14,27 +15,30 @@ class Operation():
     """
     Retrieve current script name
     """
-    def getCmdtName(self):
+    def getName(self):
         return self.script_name
 
     """
     Run the script
     """
     def execute(self, host):
-        self.cmd = subprocess.run(["scripts/" + self.script_name, host], \
-                               shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-#        try:
-#            outs, errs = cmd.communicate(timeout=15)
-#        except TimeoutExpired:
-#            proc.kill()
-#            outs, errs = cmd.communicate()
-#            print(outs)
+        try:
+            self.cmd = subprocess.Popen(["/bin/sh", "scripts/" + self.script_name, host], \
+                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            return True
+        except Exception as e:
+            print(e)
+            return False
 
     """
     Retrieve the output of the command
     """
-    def print_output(self):
-        return self.cmd.stderr.decode('utf-8'), self.cmd.stdout.decode('utf-8')
+    def getOutput(self):
+        try:
+            return self.cmd.communicate()[0].decode("utf-8")
+        except Exception as e:
+            print(e)
+            print("No output yet.")
 
     """
     Check if process is still running
@@ -42,8 +46,9 @@ class Operation():
     def isAlive(self):
         try:
             if self.cmd.poll() is None:
-                return False
-            else:
                 return True
-        except Exception:
+            else:
+                return False
+        except Exception as e:
+            print(e)
             return False
