@@ -35,6 +35,7 @@ class Operation():
     """
     def getOutput(self):
         try:
+            # Return stdout of the process
             return self.cmd.communicate()[0].decode("utf-8")
         except Exception as e:
             print(e)
@@ -45,6 +46,7 @@ class Operation():
     """
     def isAlive(self):
         try:
+            # Check if process is alive
             if self.cmd.poll() is None:
                 return True
             else:
