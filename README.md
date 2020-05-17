@@ -6,13 +6,27 @@
 
 ## Introduction
 
-r0x is a network scanner written in python.
-It uses the **python-nmap** library to retrieve informations about open ports on the target.
-The purposes of this tool are the pluggable scripts wrote in bash.
-These simple scripts contains just few raw of command such as: `nikto -host $host`.
+**r0x** is an automated enumeration script written in python.
+It uses **nmap** to discover opened ports and then enumerate them using a set of scripts provided under the `scripts/` directory.
 
-P.S. The name is due to a collegue of mine, considered one of the last real hacker out there.
-His name is **Rosario**.
+To improve the detail of information retrievable you can just add some scripts under the dedicated directory and start **r0x** to catch them using a smart nomenclature as described below.
+
+Ex. If we want to introduce a new script to automatically retrieve the `/robots.txt` file from a web server, we have just to create a script with a name as `http-robots` and make it executable.
+
+As you can see, the first part of the name (`http`) indicates the protocol we are going to enumerate.
+
+The rest of the name is left free to the author's imagination 😎.
+
+Inside the script we can place the following command:
+
+`curl http://$1/robots.txt`
+
+where `$1` will be the ip address passed by **r0x**.
+
+
+
+**P.S.** The name is due to a collegue of mine, considered one of the last real hacker out there.
+His name is **Rosario** (aka **r0x**).
 
 
 
@@ -34,8 +48,8 @@ Once you finished the installation you are ready to launch **r0x** against your 
 
 First of all, **r0x** is very easy to use.
 
-```
-$ python r0x.py -h
+```bash
+$ ./r0x.py -h
           ___          
     _ __ / _ \__  __   
    | '__| | | \ \/ /   
@@ -43,18 +57,15 @@ $ python r0x.py -h
    |_|   \___//_/\_\   
            by alegrey91
 
-usage: r0x.py [-h] [-T TIMING] [-p PORT] host
+usage: r0x.py [-h] host
 
 r0x is a network scanner for pentesting.
 
 positional arguments:
-  host                  Host ip address(es)
+  host        Host ip address(es)
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -T TIMING, --timing TIMING
-                        Set scan timing -T 0-5. Default 4
-  -p PORT, --port PORT  Select ports to scan. -p <port ranges>: Only scan specified ports Ex: -p22; -p1-65535; -p U:53,111,137,T:21-25,80,139,8080,S:9
+  -h, --help  show this help message and exit
 ```
 
 Syntax is very similar to **nmap**. 
