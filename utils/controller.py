@@ -86,13 +86,20 @@ class Controller(cmd.Cmd):
             print(self.tcp.print_output())
         elif script_name == "udp_scan":
             print(self.udp.print_output())
-        else:
+        elif script_name in self.operations:
             print("---------------- " + script_name + " ----------------")
             if not self.operations[script_name].isAlive():
-                out = self.operations[script_name].getOutput()
-                print(out)
+                out, err = self.operations[script_name].getOutput()
+                print(out.decode('utf-8'))
+
+                # Check if stderr is empty
+                if not err == b'':
+                    print("[ERR]")
+                    print(err.decode('utf-8'))
             else:
                 print("Process is still running. Cannot access its stdout.")
+        else:
+            print("Ununderstandable command!")
         print()
 
 

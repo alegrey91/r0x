@@ -36,7 +36,8 @@ class Operation():
     def getOutput(self):
         try:
             # Return stdout of the process
-            return self.cmd.communicate()[0].decode("utf-8")
+            stdout, stderr = self.cmd.communicate()
+            return stdout, stderr
         except Exception as e:
             print(e)
             print("No output yet.")
