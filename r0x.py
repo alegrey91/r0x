@@ -3,7 +3,6 @@
 __author__ = "alegrey91"
 __version__ = "0.2"
 
-import nmap as nm
 import argparse
 import signal
 import sys
