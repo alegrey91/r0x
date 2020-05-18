@@ -1,5 +1,8 @@
-#!/usr/bin/env python3
-
+"""
+Author: Alessio Greggi
+Description:
+Class to automamate tcp scanning process.
+"""
 import nmap as nm
 
 NMAPSCAN = "-n -Pn -T4 -sS "

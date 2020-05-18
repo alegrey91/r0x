@@ -1,4 +1,11 @@
-#!/usr/bin/env python3
+"""
+Author: Alessio Greggi
+Description:
+Class to manage operations launched from console.
+Operations are atomic shell script which executes a specific action.
+The following class help you to check if the operation is still running,
+or getting its output after finished.
+"""
 
 import subprocess
 import traceback

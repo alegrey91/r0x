@@ -1,4 +1,6 @@
 """
+Author: Alessio Greggi
+Description:
 Variables used in utils modules.
 """
 

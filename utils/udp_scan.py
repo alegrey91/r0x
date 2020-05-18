@@ -1,6 +1,8 @@
-#!/usr/bin/env python3
-
-#from . import variables
+"""
+Author: Alessio Greggi
+Description:
+Class to automate udp scanning process.
+"""
 import subprocess
 import os
 import re

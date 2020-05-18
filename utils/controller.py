@@ -1,4 +1,10 @@
-#!/usr/bin/env python3
+"""
+Author: Alessio Greggi
+Description:
+Class to control the application flow.
+This allow you to have a console to manage the script,
+executing available command such as status, show, etc..
+"""
 
 import cmd
 import sys
