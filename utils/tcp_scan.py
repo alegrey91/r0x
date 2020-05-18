@@ -18,7 +18,7 @@ class TCPScan:
     """
     Print formatted output.
     """
-    def print_output(self):
+    def getOutput(self):
         for ip in self.nmap.all_hosts():
             ports = self.nmap[ip].all_tcp()
             print("[TCP]")
