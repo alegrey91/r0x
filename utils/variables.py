@@ -12,3 +12,6 @@ SHELL = "[r0x shell]"
 RED = "\033[31m"
 GREEN = "\033[32m"
 RST = "\033[0m"
+
+TCP = "tcp_scan"
+UDP = "udp_scan"

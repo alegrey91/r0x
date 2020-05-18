@@ -29,6 +29,7 @@ class Controller(cmd.Cmd):
         self.host = host
 
         print(v.SHELL)
+
         # Scanning phase
         self.tcp = tcp_scan.TCPScan(host)
         self.udp = udp_scan.UDPScan(host)
@@ -42,8 +43,8 @@ class Controller(cmd.Cmd):
         thread_udp.start()
 
         # Take track of scanning threads
-        self.scans["tcp_scan"] = thread_tcp
-        self.scans["udp_scan"] = thread_udp
+        self.scans[v.TCP] = thread_tcp
+        self.scans[v.UDP] = thread_udp
 
 
     """
@@ -51,7 +52,6 @@ class Controller(cmd.Cmd):
     """
     def do_exec(self, script_name):
         'Execute script manually.'
-
         op = operation.Operation(script_name)
         self.operations[script_name] = op
 
@@ -89,10 +89,10 @@ class Controller(cmd.Cmd):
     """
     def do_show(self, script_name):
         'Show the output of the selected operation. Usage: show [ scan | operation ].'
-        if script_name == "tcp_scan":
-            print(self.tcp.print_output())
-        elif script_name == "udp_scan":
-            print(self.udp.print_output())
+        if script_name == v.TCP:
+            print(self.tcp.getOutput())
+        elif script_name == v.UDP:
+            print(self.udp.getOutput())
         elif script_name in self.operations:
             print("---------------- " + script_name + " ----------------")
             if not self.operations[script_name].isAlive():
