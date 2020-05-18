@@ -7,9 +7,10 @@ import threading
 from utils import tcp_scan
 from utils import udp_scan
 from utils import operation
+from utils import variables as v
 
 class Controller(cmd.Cmd):
-    prompt = "⮡  "
+    prompt = v.PROMPT
 
     def __init__(self, host):
 
@@ -21,7 +22,7 @@ class Controller(cmd.Cmd):
         self.udp = None
         self.host = host
 
-        print("[r0x-shell]")
+        print(v.SHELL)
         # Scanning phase
         self.tcp = tcp_scan.TCPScan(host)
         self.udp = udp_scan.UDPScan(host)
@@ -62,18 +63,18 @@ class Controller(cmd.Cmd):
         print("[SCANNING]")
         for scan in self.scans:
             if not self.scans[scan].isAlive():
-                print(scan + ": \033[32mcompleted\033[0m")
+                print(scan + ": " + v.GREEN + "completed" + v.RST)
             else:
-                print(scan + ": \033[31mrunning\033[0m")
+                print(scan + ": " + v.RED + "running" + v.RST)
         print()
         print("[OPERATIONS]")
         if len(self.operations) < 1:
             print("...")
         for ops in self.operations:
             if not self.operations[ops].isAlive():
-                print(self.operations[ops].getName() + ": \033[32mcompleted\033[0m")
+                print(self.operations[ops].getName() + ": " + v.GREEN + "completed" + v.RST)
             else:
-                print(self.operations[ops].getName() + ": \033[31mrunning\033[0m")
+                print(self.operations[ops].getName() + ": " + v.RED + "running" + v.RST)
         print()
 
 
@@ -94,7 +95,7 @@ class Controller(cmd.Cmd):
 
                 # Check if stderr is empty
                 if not err == b'':
-                    print("[ERR]")
+                    print("[ERROR]")
                     print(err.decode('utf-8'))
             else:
                 print("Process is still running. Cannot access its stdout.")
