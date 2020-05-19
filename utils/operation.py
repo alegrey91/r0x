@@ -16,15 +16,22 @@ class Operation():
     """
     Constructor
     """
-    def __init__(self, script_name):
+    def __init__(self, script_name, port):
         self.cmd = None
         self.script_name = script_name
+        self.port = port
 
     """
     Retrieve current script name
     """
     def getName(self):
         return self.script_name
+
+    """
+    Retrieve attacking port
+    """
+    def getPort(self):
+        return self.port
 
     """
     Run the script
