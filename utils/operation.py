@@ -9,6 +9,7 @@ or getting its output after finished.
 
 import subprocess
 import traceback
+from utils import variables as v
 
 class Operation():
 
@@ -28,9 +29,9 @@ class Operation():
     """
     Run the script
     """
-    def execute(self, host):
+    def execute(self, host, port):
         try:
-            self.cmd = subprocess.Popen(["/bin/sh", "scripts/" + self.script_name, host], \
+            self.cmd = subprocess.Popen(["/bin/sh", v.base_script + self.script_name, host, port], \
                                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             return True
         except Exception as e:
