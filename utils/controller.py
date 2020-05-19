@@ -76,7 +76,6 @@ class Controller(cmd.Cmd):
             port = res[0]
             proto = res[1]
             scripts = self.findScripts(proto)
-            print(scripts)
             for script in scripts:
                 op = operation.Operation(script, str(port))
                 self.operations[script + "-" + str(port)] = op
