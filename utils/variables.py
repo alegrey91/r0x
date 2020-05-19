@@ -15,3 +15,5 @@ RST = "\033[0m"
 
 TCP = "tcp_scan"
 UDP = "udp_scan"
+
+base_script = "scripts/"
