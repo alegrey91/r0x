@@ -60,6 +60,7 @@ class TCPScan:
     Scan using a basic SYN scan.
     """
     def fullscan(self):
+#        self.args += '-p 80,8080,8384' # debug
         self.args += "-p- "
         self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
         arg_ports = ""
