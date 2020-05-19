@@ -1,0 +1,1 @@
+curl http://$1:$2/robots.txt

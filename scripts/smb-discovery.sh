@@ -1,1 +1,0 @@
-smbclient -L //$1/
