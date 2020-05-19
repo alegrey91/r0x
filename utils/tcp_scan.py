@@ -5,7 +5,7 @@ Class to automamate tcp scanning process.
 """
 import nmap as nm
 
-NMAPSCAN = "-n -Pn -T4 -sS "
+NMAPSCAN = "-n -Pn -T5 -sS "
 
 class TCPScan:
 
@@ -52,3 +52,21 @@ class TCPScan:
         self.args += "-p- "
         self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
         return self.nmap
+
+
+    """
+    Get nmap results.
+    """
+    def result(self):
+        results = []
+        for ip in self.nmap.all_hosts():
+            ports = self.nmap[ip].all_tcp()
+            for port in ports:
+                entry = []
+                info = dict(self.nmap[ip].tcp(port))
+                print(type(info['name']))
+                print(type(info['state']))
+                entry.append(port)
+                entry.append(info['name'])
+                results.append(entry)
+        return results
