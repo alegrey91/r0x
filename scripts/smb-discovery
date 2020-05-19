@@ -1,1 +1,1 @@
-smbclient -L //$1/
+smbclient -L -p $2 //$1/

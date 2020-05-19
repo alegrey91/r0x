@@ -1,1 +1,1 @@
-nmap -p 139,445 --script=smb-enum-shares.nse,smb-enum-users.nse $1
+nmap -p $2 --script=smb-enum-shares.nse,smb-enum-users.nse $1
