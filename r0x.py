@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 __author__ = "alegrey91"
-__version__ = "0.2"
+__version__ = "0.9"
 
 import argparse
 import signal
@@ -14,6 +14,7 @@ def banner():
     print("\033[93m   | '__| | | \ \/ /   \033[0m")
     print("\033[33m   | |  | |_| |>  <    \033[0m")
     print("\033[91m   |_|   \___//_/\_\   \033[0m")
+    print("           version: {}".format(__version__))
     print("           by {}".format(__author__))
     print()
 
