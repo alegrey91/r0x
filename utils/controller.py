@@ -9,6 +9,7 @@ executing available command such as status, show, etc..
 import cmd
 import sys
 import threading
+import os
 
 from utils import tcp_scan
 from utils import udp_scan
@@ -27,6 +28,8 @@ class Controller(cmd.Cmd):
         self.tcp = None
         self.udp = None
         self.host = host
+        self.thread_tcp = None
+        self.thread_udp = None
 
         print(v.SHELL)
 
@@ -35,12 +38,12 @@ class Controller(cmd.Cmd):
         self.udp = udp_scan.UDPScan(host)
 
         #thread_tcp = threading.Thread(target=tcp.scan)
-        thread_tcp = threading.Thread(target=self.tcp.fullscan)
-        thread_udp = threading.Thread(target=self.udp.scan)
-        thread_tcp.setDaemon(True)
-        thread_udp.setDaemon(True)
-        thread_tcp.start()
-        thread_udp.start()
+        self.thread_tcp = threading.Thread(target=self.tcp.fullscan)
+        self.thread_udp = threading.Thread(target=self.udp.scan)
+        self.thread_tcp.setDaemon(True)
+        self.thread_udp.setDaemon(True)
+        self.thread_tcp.start()
+        self.thread_udp.start()
 
         # Take track of scanning threads
         self.scans[v.TCP] = thread_tcp
@@ -55,9 +58,21 @@ class Controller(cmd.Cmd):
         op = operation.Operation(script_name)
         self.operations[script_name] = op
 
-        thread = threading.Thread(target=op.execute, args=[self.host])
+        thread = threading.Thread(target=op.execute, args=[self.host, port])
         thread.setDaemon(True)
         thread.start()
+        print()
+
+
+    """
+    List available scripts.
+    For debugging.
+    """
+    def do_list(self, _):
+        'List available scripts.'
+        files = os.listdir(v.base_script)
+        for file in files:
+            print(file)
         print()
 
 
