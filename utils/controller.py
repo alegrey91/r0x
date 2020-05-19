@@ -46,12 +46,50 @@ class Controller(cmd.Cmd):
         self.thread_udp.start()
 
         # Take track of scanning threads
-        self.scans[v.TCP] = thread_tcp
-        self.scans[v.UDP] = thread_udp
+        self.scans[v.TCP] = self.thread_tcp
+        self.scans[v.UDP] = self.thread_udp
 
 
     """
-    Method to execute commands for tests
+    Find right protocol scripts.
+    TODO: Actually the method find scripts only
+    searching for protocol. Would be a great improvement
+    create a map to allow the method to find all the scripts
+    for the right protocol.
+    """
+    def findScripts(self, pattern):
+        files = []
+        for file in os.listdir(v.base_script):
+            if file.startswith(pattern):
+                files.append(file)
+        return files
+
+
+    """
+    Perform the gathering against ports found.
+    """
+    def do_attack(self, _):
+        'Perform the gathering against ports found.'
+        results = self.tcp.result()
+        print(results)
+        for res in results:
+            port = res[0]
+            proto = res[1]
+            scripts = self.findScripts(proto)
+            print(scripts)
+            for script in scripts:
+                op = operation.Operation(script, str(port))
+                self.operations[script + "-" + str(port)] = op
+
+                thread = threading.Thread(target=op.execute, args=[self.host, str(port)])
+                thread.setDaemon(True)
+                thread.start()
+        print(self.operations)
+        print()
+
+
+    """
+    Method to execute commands for debugging.
     """
     def do_exec(self, script_name):
         'Execute script manually.'
@@ -59,6 +97,7 @@ class Controller(cmd.Cmd):
         self.operations[script_name] = op
 
         thread = threading.Thread(target=op.execute, args=[self.host, port])
+#        thread = threading.Thread(target=op.execute, args=[self.host, "80"])
         thread.setDaemon(True)
         thread.start()
         print()
@@ -93,9 +132,9 @@ class Controller(cmd.Cmd):
             print("...")
         for ops in self.operations:
             if not self.operations[ops].isAlive():
-                print(self.operations[ops].getName() + ": " + v.GREEN + "completed" + v.RST)
+                print(ops + ": " + v.GREEN + "completed" + v.RST)
             else:
-                print(self.operations[ops].getName() + ": " + v.RED + "running" + v.RST)
+                print(ops + ": " + v.RED + "running" + v.RST)
         print()
 
 
