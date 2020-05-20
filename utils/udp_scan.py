@@ -75,11 +75,12 @@ class UDPScan:
         arg_ports = ""
         for ip in self.nmap.all_hosts():
             ports = self.nmap[ip].all_udp()
-            for i in range(0, len(ports)):
-                if i == (len(ports) - 1):
-                    arg_ports += str(ports[i])
-                else:
-                    arg_ports += str(ports[i]) + ","
-            self.args = NMAPDEEPSCAN.format(arg_ports)
-            self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
+            if len(ports) > 0:
+                for i in range(0, len(ports)):
+                    if i == (len(ports) - 1):
+                        arg_ports += str(ports[i])
+                    else:
+                        arg_ports += str(ports[i]) + ","
+                self.args = NMAPDEEPSCAN.format(arg_ports)
+                self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
         return self.nmap
