@@ -95,8 +95,8 @@ class TCPScan:
             for port in ports:
                 entry = []
                 info = dict(self.nmap[ip].tcp(port))
-                print(type(info['name']))
-                print(type(info['state']))
+#                print(type(info['name']))
+#                print(type(info['state']))
                 entry.append(port)
                 entry.append(info['name'])
                 results.append(entry)
