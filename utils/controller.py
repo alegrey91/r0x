@@ -71,7 +71,6 @@ class Controller(cmd.Cmd):
     def do_attack(self, _):
         'Perform the gathering against ports found.'
         results = self.tcp.result()
-        print(results)
         for res in results:
             port = res[0]
             proto = res[1]
@@ -83,7 +82,6 @@ class Controller(cmd.Cmd):
                 thread = threading.Thread(target=op.execute, args=[self.host, str(port)])
                 thread.setDaemon(True)
                 thread.start()
-        print(self.operations)
         print()
 
 
@@ -96,7 +94,6 @@ class Controller(cmd.Cmd):
         self.operations[script_name] = op
 
         thread = threading.Thread(target=op.execute, args=[self.host, port])
-#        thread = threading.Thread(target=op.execute, args=[self.host, "80"])
         thread.setDaemon(True)
         thread.start()
         print()
@@ -161,6 +158,19 @@ class Controller(cmd.Cmd):
         else:
             print("Ununderstandable command!")
         print()
+
+
+    """
+    Auticompletion for show command.
+    """
+    def complete_show(self, text, line, begidx, endidx):
+        'Help you listing the available scripts to be shown.'
+        avail_scripts = []
+        avail_scripts.append(v.TCP)
+        avail_scripts.append(v.UDP)
+        for ops in self.operations:
+            avail_scripts.append(ops)
+        return [ script for script in avail_scripts if script.startswith(text) ]
 
 
     """
