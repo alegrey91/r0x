@@ -4,6 +4,8 @@ Description:
 Class to automamate tcp scanning process.
 """
 import nmap as nm
+import sys
+from utils import variables as v
 
 NMAPSCAN = "-n -Pn -T5 -sS "
 NMAPDEEPSCAN = "-n -Pn -T5 -sS -sV -p {}"
@@ -42,18 +44,21 @@ class TCPScan:
     Scan using a basic SYN scan.
     """
     def scan(self):
-        self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
-        arg_ports = ""
-        for ip in self.nmap.all_hosts():
-            ports = self.nmap[ip].all_tcp()
-            for i in range(0, len(ports)):
-                if i == (len(ports) - 1):
-                    arg_ports += str(ports[i])
-                else:
-                    arg_ports += str(ports[i]) + ","
-            self.args = NMAPDEEPSCAN.format(arg_ports)
+        try:
             self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
-        return self.nmap
+            arg_ports = ""
+            for ip in self.nmap.all_hosts():
+                ports = self.nmap[ip].all_tcp()
+                for i in range(0, len(ports)):
+                    if i == (len(ports) - 1):
+                        arg_ports += str(ports[i])
+                    else:
+                        arg_ports += str(ports[i]) + ","
+                self.args = NMAPDEEPSCAN.format(arg_ports)
+                self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
+            return self.nmap
+        except Exception:
+            print(v.RED + "[-]" + v.RST + " r0x need root's privileges to run tcp scan.")
 
 
     """
@@ -62,19 +67,22 @@ class TCPScan:
     def fullscan(self):
 #        self.args += '-p 80,8080,8384' # debug
         self.args += "-p- "
-        self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
-        arg_ports = ""
-        for ip in self.nmap.all_hosts():
-            ports = self.nmap[ip].all_tcp()
-            if len(ports) > 0:
-                for i in range(0, len(ports)):
-                    if i == (len(ports) - 1):
-                        arg_ports += str(ports[i])
-                    else:
-                        arg_ports += str(ports[i]) + ","
-                self.args = NMAPDEEPSCAN.format(arg_ports)
-                self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
-        return self.nmap
+        try:
+            self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
+            arg_ports = ""
+            for ip in self.nmap.all_hosts():
+                ports = self.nmap[ip].all_tcp()
+                if len(ports) > 0:
+                    for i in range(0, len(ports)):
+                        if i == (len(ports) - 1):
+                            arg_ports += str(ports[i])
+                        else:
+                            arg_ports += str(ports[i]) + ","
+                    self.args = NMAPDEEPSCAN.format(arg_ports)
+                    self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
+            return self.nmap
+        except Exception:
+            print(v.RED + "[-]" + v.RST + " r0x need root's privileges to run tcp scan.")
 
 
     """

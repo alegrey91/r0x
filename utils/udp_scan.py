@@ -7,6 +7,8 @@ import subprocess
 import os
 import re
 import nmap as nm
+import sys
+from utils import variables as v
 
 UNICORNSCAN = "unicornscan -mU -r200 {}"
 NMAPSCAN = "-sU --host-timeout 100 "
@@ -71,16 +73,20 @@ class UDPScan:
     perform an exaustive scan using nmap.
     """
     def scan(self):
-        self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
-        arg_ports = ""
-        for ip in self.nmap.all_hosts():
-            ports = self.nmap[ip].all_udp()
-            if len(ports) > 0:
-                for i in range(0, len(ports)):
-                    if i == (len(ports) - 1):
-                        arg_ports += str(ports[i])
-                    else:
-                        arg_ports += str(ports[i]) + ","
-                self.args = NMAPDEEPSCAN.format(arg_ports)
-                self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
-        return self.nmap
+        try:
+            self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
+            arg_ports = ""
+            for ip in self.nmap.all_hosts():
+                ports = self.nmap[ip].all_udp()
+                if len(ports) > 0:
+                    for i in range(0, len(ports)):
+                        if i == (len(ports) - 1):
+                            arg_ports += str(ports[i])
+                        else:
+                            arg_ports += str(ports[i]) + ","
+                    self.args = NMAPDEEPSCAN.format(arg_ports)
+                    self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
+            return self.nmap
+        except Exception:
+            print(v.RED + "[-]" + v.RST + " r0x need root's privileges to run tcp scan.")
+
