@@ -20,6 +20,8 @@ class Operation():
         self.cmd = None
         self.script_name = script_name
         self.port = port
+        self.stdout = ""
+        self.stderr = ""
 
     """
     Retrieve current script name
@@ -51,8 +53,8 @@ class Operation():
     def getOutput(self):
         try:
             # Return stdout of the process
-            stdout, stderr = self.cmd.communicate()
-            return stdout, stderr
+            self.stdout, self.stderr = self.cmd.communicate()
+            return self.stdout, self.stderr
         except Exception as e:
             print(e)
             print("No output yet.")
