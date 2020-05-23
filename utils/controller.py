@@ -70,14 +70,32 @@ class Controller(cmd.Cmd):
     """
     def do_attack(self, _):
         'Perform the gathering against ports found.'
-        results = self.tcp.result()
-        for res in results:
+        # TCP attack
+        tcp_results = self.tcp.result()
+        for res in tcp_results:
             port = res[0]
             proto = res[1]
             scripts = self.findScripts(proto)
             for script in scripts:
                 op = operation.Operation(script, str(port))
-                self.operations[script + "-" + str(port)] = op
+                operation_name = script + "-" + str(port)
+                self.operations[operation_name] = op
+                print(operation_name)
+
+                thread = threading.Thread(target=op.execute, args=[self.host, str(port)])
+                thread.setDaemon(True)
+                thread.start()
+        # UDP attack
+        udp_results = self.udp.result()
+        for res in udp_results:
+            port = res[0]
+            proto = res[1]
+            scripts = self.findScripts(proto)
+            for script in scripts:
+                op = operation.Operation(script, str(port))
+                operation_name = script + "-" + str(port)
+                self.operations[operation_name] = op
+                print(operation_name)
 
                 thread = threading.Thread(target=op.execute, args=[self.host, str(port)])
                 thread.setDaemon(True)

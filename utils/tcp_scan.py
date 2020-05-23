@@ -65,7 +65,6 @@ class TCPScan:
     Scan using a basic SYN scan.
     """
     def fullscan(self):
-#        self.args += '-p 80,8080,8384' # debug
         self.args += "-p- "
         try:
             self.nmap.scan(hosts=self.ipaddr, arguments=self.args)
@@ -95,8 +94,6 @@ class TCPScan:
             for port in ports:
                 entry = []
                 info = dict(self.nmap[ip].tcp(port))
-#                print(type(info['name']))
-#                print(type(info['state']))
                 entry.append(port)
                 entry.append(info['name'])
                 results.append(entry)

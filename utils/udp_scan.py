@@ -11,7 +11,7 @@ import sys
 from utils import variables as v
 
 UNICORNSCAN = "unicornscan -mU -r200 {}"
-NMAPSCAN = "-sU --host-timeout 100 "
+NMAPSCAN = "-sU --host-timeout 100 -p 161" + v.top_udp_ports
 NMAPDEEPSCAN = "-sU --host-timeout 100 -sV -p {} "
 top_ports = "--top-ports 50 "
 
@@ -90,3 +90,18 @@ class UDPScan:
         except Exception:
             print(v.RED + "[-]" + v.RST + " r0x need root's privileges to run tcp scan.")
 
+
+    """
+    Get nmap results.
+    """
+    def result(self):
+        results = []
+        for ip in self.nmap.all_hosts():
+            ports = self.nmap[ip].all_udp()
+            for port in ports:
+                entry = []
+                info = dict(self.nmap[ip].udp(port))
+                entry.append(port)
+                entry.append(info['name'])
+                results.append(entry)
+        return results
