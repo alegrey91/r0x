@@ -166,11 +166,22 @@ class Controller(cmd.Cmd):
     def complete_show(self, text, line, begidx, endidx):
         'Help you listing the available scripts to be shown.'
         avail_scripts = []
+        hints = []
+        # Prepare available scripts list
         avail_scripts.append(v.TCP)
         avail_scripts.append(v.UDP)
         for ops in self.operations:
             avail_scripts.append(ops)
-        return [ script for script in avail_scripts if script.startswith(text) ]
+
+        # Filter scripts that match research
+        for script in avail_scripts:
+            if text in script:
+                hints.append(script)
+        if len(hints) == 1:
+            completion = hints[0]
+            return [ completion ]
+        else:
+            return hints
 
 
     """
