@@ -38,6 +38,20 @@ Once you finished the installation you are ready to launch **r0x** against your 
 
 
 
+## Dockerfile
+
+To avoid common dependencies problems, I decided to setup a `Dockerfile` to build **r0x** container by yourself. 
+
+From your local repository type: 
+
+`docker build . -t r0x`. This will take a while.
+
+Once the build has finished, you can launch the **r0x** container using:
+
+ `docker run -it --rm localhost/r0x /bin/bash`, and run **r0x**.
+
+
+
 ## Usage
 
 **r0x** is very easy to use.
@@ -87,7 +101,7 @@ Inside the script we can place the following command:
 
 where `$1` is the **ip address**, and `$2` the **port number**, both passed by **r0x** as script arguments.
 
-
+Remember to check if the commands you are using are available into the `Dockerfile`. If not, plase add the right package to make it available into the **r0x** container.
 
 ## Scope
 
