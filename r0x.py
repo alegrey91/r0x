@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 __author__ = "alegrey91"
-__version__ = "0.9.7"
+__version__ = "0.9.8"
 
 import argparse
 import signal
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     signal.signal(signal.SIGTERM, signal_handler)
 
     # Argument parsing
-    parser = argparse.ArgumentParser(description='r0x is a network scanner for pentesting.')
+    parser = argparse.ArgumentParser(description='r0x is an automated enumeration tool.')
     parser.add_argument("host",
             type=str,
             help="Host ip address(es)")
