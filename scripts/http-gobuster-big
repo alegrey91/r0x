@@ -1,0 +1,1 @@
+/home/alessio/go/bin/gobuster dir -u http://$1:$2/ -w wordlists/big.txt -t 15
