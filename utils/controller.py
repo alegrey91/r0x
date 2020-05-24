@@ -173,6 +173,7 @@ class Controller(cmd.Cmd):
                     print(err.decode('utf-8'))
             else:
                 print("Process is still running. Cannot access its stdout.")
+            print("-----------------------------------------------------")
         else:
             print("Ununderstandable command!")
         print()
