@@ -7,7 +7,7 @@
 ## Introduction
 
 **r0x** is an automated enumeration tool written in python.
-It uses **nmap** to discover open ports and then enumerate them using a set of commands provided under the `scripts/` directory.
+It uses **nmap** to discover open ports and then enumerate them using the set of commands provided under the `scripts/` directory.
 
 The main feature of **r0x** is the interactiveness. After started, **r0x** provide a simple menu where you can check the scripts **status**, **list** them, and **show** their output.
 
@@ -26,11 +26,11 @@ His name is **Rosario** (aka **r0x**).
 
 ## Installation
 
-To install the **r0x** and make it work, you neet at first to clone the repo:
+To install **r0x** and make it works, you need at first to clone the repo:
 
 `git clone https://github.com/alegrey91/r0x.git && cd r0x/`
 
-And finally you can launch the dependencies installation:
+And then you can launch the dependencies installation:
 
 `sudo pip3 install -r requirements.txt`
 
@@ -40,11 +40,11 @@ Once you finished the installation you are ready to launch **r0x** against your 
 
 ## Usage
 
-First of all, **r0x** is very easy to use.
+**r0x** is very easy to use.
 
 ```bash
 sudo ./r0x.py -h
-		  ___          
+          ___          
     _ __ / _ \__  __   
    | '__| | | \ \/ /   
    | |  | |_| |>  <    
@@ -62,6 +62,8 @@ positional arguments:
 optional arguments:
   -h, --help  show this help message and exit
 ```
+
+It needs root privileges, because to scan the target, it uses SYN and UDP scan.
 
 To start to scan your target, just type the following command: `sudo ./r0x.py target.ip`.
 
