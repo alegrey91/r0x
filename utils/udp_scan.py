@@ -11,7 +11,7 @@ import sys
 from utils import variables as v
 
 UNICORNSCAN = "unicornscan -mU -r200 {}"
-NMAPSCAN = "-sU --host-timeout 100 -p 161" + v.top_udp_ports
+NMAPSCAN = "-sU --host-timeout 400 -p" + v.top_udp_ports
 NMAPDEEPSCAN = "-sU --host-timeout 100 -sV -p {} "
 top_ports = "--top-ports 50 "
 
@@ -24,7 +24,7 @@ class UDPScan:
 
     def __init__(self, ipaddr):
         self.ipaddr = ipaddr
-        self.args = NMAPSCAN + top_ports
+        self.args = NMAPSCAN
         self.nmap = nm.PortScanner()
 
 
