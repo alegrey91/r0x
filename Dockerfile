@@ -1,7 +1,5 @@
 FROM kalilinux/kali-rolling
 
-COPY . /root/r0x
-
 # Install legion dependencies.
 RUN apt-get update
 RUN apt-get install -y \
@@ -10,6 +8,7 @@ RUN apt-get install -y \
         dnsrecon \
         dnsutils \
         enum4linux \
+        git \
         gobuster \
         hydra \
         netcat \
@@ -25,7 +24,7 @@ RUN apt-get install -y \
         snmpcheck
 
 # Start the installation phase.
-RUN cd /root/r0x
+RUN cd /root/ && git clone https://github.com/alegrey91/r0x.git
 RUN pip3 install -r /root/r0x/requirements.txt
 
 WORKDIR /root/r0x
