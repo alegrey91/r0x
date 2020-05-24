@@ -1,0 +1,1 @@
+nmap -sU -p $2 --script ntp-info $1
