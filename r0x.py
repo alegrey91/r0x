@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 __author__ = "alegrey91"
-__version__ = "0.9.8"
+__version__ = "0.9.9"
 
 import argparse
 import signal
