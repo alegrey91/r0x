@@ -12,7 +12,7 @@ from utils import variables as v
 
 UNICORNSCAN = "unicornscan -mU -r200 {}"
 NMAPSCAN = "-sU --host-timeout 400 -p" + v.top_udp_ports
-NMAPDEEPSCAN = "-sU --host-timeout 100 -sV -p {} "
+NMAPDEEPSCAN = "-sU --host-timeout 400 -sV -p {} "
 top_ports = "--top-ports 50 "
 
 
