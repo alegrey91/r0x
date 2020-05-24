@@ -54,7 +54,7 @@ sudo ./r0x.py -h
 
 usage: r0x.py [-h] host
 
-r0x is a network scanner for pentesting.
+r0x is an automated enumeration tool.
 
 positional arguments:
   host        Host ip address(es)
